@@ -1,0 +1,1 @@
+./duschinsky_read Duschinsky_formatted.txt Displacement_formatted.txt singlet_formatted.txt triplet_formatted.txt > duschinsky_read_short.out
