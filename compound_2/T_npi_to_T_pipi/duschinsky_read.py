@@ -148,52 +148,12 @@ class IC:
 		integrand = np.exp(- 1j * self.adiabatic * self.time) * product
 		return (integrand, sqrt_updated, rho)
 
-
-
-
-
-
-#det = XI(t)
-#duschinsky_T = np.transpose(duschinsky)
-#L = np.dot(np.dot(np.dot(np.dot(cminus, omega_f_inv), duschinsky_T), omega_i), aplus) + np.dot(np.dot(cplus, np.linalg.inv(duschinsky)), aminus)
-#LP = np.dot(np.dot(np.dot(np.dot(cplus, omega_f_inv), duschinsky_T), omega_i), aminus) + np.dot(np.dot(cminus, np.linalg.inv(duschinsky)), aplus)
-
-
-#duschinsky_TInv = np.linalg.inv(duschinsky_T)
-#J = np.dot(np.dot(np.dot(np.dot(aplus, omega_i_inv), duschinsky_TInv), omega_f), cminus) + np.dot(np.dot(aminus, duschinsky), cplus)
-#AFSFC = np.dot(np.dot(np.dot(np.dot(aplus, omega_i_inv), duschinsky_TInv), omega_f), cminus)
-#ASC = np.dot(np.dot(aminus, duschinsky), cplus)
-
-#L_inv = np.linalg.inv(L)
-#LP_inv = np.linalg.inv(LP)
-#Lambda = np.dot(np.dot(aplus, L_inv), cplus) - np.dot(np.dot(aminus, LP_inv), cminus)
-#ALC = np.dot(np.dot(aplus, L_inv), cplus)
-#ALPC = np.dot(np.dot(aminus, LP_inv), cminus)
-
-#zeta = np.dot(np.dot(A, omega_i), displacement)
-#eta = np.dot(np.dot(np.linalg.inv(J), aminus), displacement)
-#psi = displacement - np.dot(np.dot(duschinsky, cplus), eta)
-#SS = np.dot(duschinsky_T, duschinsky)
-#JL = np.dot(J, L)
-#SS_det = np.linalg.det(SS)
-#JL_det = np.linalg.det(JL)
-#SI = np.dot(duschinsky_T, omega_i)
-#AP = np.dot(A, psi)
-#SIL = np.dot(np.dot(duschinsky_T, omega_i), Lambda)
-#FCE = np.dot(np.dot(omega_f, cminus), eta)
-#SIAP = np.dot(np.dot(np.dot(duschinsky_T, omega_i), A), psi)
-#AP = np.dot(A, psi)
-#eta_dot_psi = np.dot(eta, psi)
-
-#sqrt = np.sqrt(det / partition / (SS_det * JL_det) / partition)
 correlation = []
 trace_vector = []
 updated_sqrt = - 1.0 + 0. * 1j
 timestep = 0.01
 for i in range(200000):
 	time = timestep * i
-	#if i // 1000 == 0:
-	#	print(i)
 	test = IC(nmodes, duschinsky, displacement, freq_initial, freq_final, time, beta, updated_sqrt, partition, adiabatic, R_matrix).integrand()
 	updated_sqrt = test[1]
 	if i == 0:

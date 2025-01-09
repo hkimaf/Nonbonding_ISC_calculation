@@ -1,0 +1,2 @@
+ifort -o duschinsky_read duschinsky_read.f90 -L/{$MKLROOT}/libraries -lmkl_rt -lmkl_core -lmkl_sequential -I/{$MKLROOT}/include
+./duschinsky_read Duschinsky_formatted.txt Displacement_formatted.txt singlet_formatted.txt triplet_formatted.txt

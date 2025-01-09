@@ -1,0 +1,2 @@
+bash README.txt
+./duschinsky_read duschinsky_formatted.txt displacement_formatted.txt t_pipi_formatted.txt t_npi_formatted.txt adiabatic d_fi.txt 10000, 0.1, 300.0 
