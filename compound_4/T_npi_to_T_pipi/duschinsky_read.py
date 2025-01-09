@@ -4,10 +4,10 @@ import copy
 
 duschinsky = np.loadtxt('duschinsky_formatted.txt')
 displacement = np.loadtxt('displacement_formatted.txt')
-freq_initial = np.loadtxt('t_pipi_formatted.txt')
-freq_final = np.loadtxt('t_npi_formatted.txt')
+freq_initial = np.loadtxt('t_npi_formatted.txt')
+freq_final = np.loadtxt('t_pipi_formatted.txt')
 d_fi = np.loadtxt('d_fi.txt')
-adiabatic = - 9.382700000060140e-04
+adiabatic = 0.009339559999944
 atomic_time = 2.418884326505e-17
 c_cm = 2.998e10
 boltzmann = 3.166811563455607e-06
@@ -47,9 +47,9 @@ class IC:
 		aminus = copy.copy(aplus)
 		A = copy.copy(aminus)
 		for i in range(nmodes):
-			tilde_n = 1 / (np.exp(beta * self.ifreq[i]) - 1)
-			aminus[i][i] = (tilde_n + 1) - tilde_n * np.exp(self.ifreq[i] * time * 1j)
-			aplus[i][i] = (tilde_n + 1) + tilde_n * np.exp(1j * self.ifreq[i] * time)
+			tilde_n = 1 / (np.exp(beta * freq_initial[i]) - 1)
+			aminus[i][i] = (tilde_n + 1) - tilde_n * np.exp(freq_initial[i] * time * 1j)
+			aplus[i][i] = (tilde_n + 1) + tilde_n * np.exp(1j * freq_initial[i] * time)
 			A[i][i] = aminus[i][i] / aplus[i][i]
 		return (A, aplus, aminus)
 
@@ -57,8 +57,8 @@ class IC:
 		cplus = np.array([[0. + 0. * 1j for i in range(nmodes)] for j in range(nmodes)])
 		cminus = copy.copy(cplus)
 		for i in range(nmodes):
-			cminus[i][i] = 1. - np.exp(- 1j * self.ffreq[i] * time)
-			cplus[i][i] = 1. + np.exp(- 1j * self.ffreq[i] * time)
+			cminus[i][i] = 1. - np.exp(- 1j * freq_final[i] * time)
+			cplus[i][i] = 1. + np.exp(- 1j * freq_final[i] * time)
 		return (cplus, cminus)
 
 	def XI(self, aplus, aminus, cplus, cminus):
@@ -148,11 +148,49 @@ class IC:
 		integrand = np.exp(- 1j * self.adiabatic * self.time) * product
 		return (integrand, sqrt_updated, rho)
 
+
+
+
+
+
+#det = XI(t)
+#duschinsky_T = np.transpose(duschinsky)
+#L = np.dot(np.dot(np.dot(np.dot(cminus, omega_f_inv), duschinsky_T), omega_i), aplus) + np.dot(np.dot(cplus, np.linalg.inv(duschinsky)), aminus)
+#LP = np.dot(np.dot(np.dot(np.dot(cplus, omega_f_inv), duschinsky_T), omega_i), aminus) + np.dot(np.dot(cminus, np.linalg.inv(duschinsky)), aplus)
+
+
+#duschinsky_TInv = np.linalg.inv(duschinsky_T)
+#J = np.dot(np.dot(np.dot(np.dot(aplus, omega_i_inv), duschinsky_TInv), omega_f), cminus) + np.dot(np.dot(aminus, duschinsky), cplus)
+#AFSFC = np.dot(np.dot(np.dot(np.dot(aplus, omega_i_inv), duschinsky_TInv), omega_f), cminus)
+#ASC = np.dot(np.dot(aminus, duschinsky), cplus)
+
+#L_inv = np.linalg.inv(L)
+#LP_inv = np.linalg.inv(LP)
+#Lambda = np.dot(np.dot(aplus, L_inv), cplus) - np.dot(np.dot(aminus, LP_inv), cminus)
+#ALC = np.dot(np.dot(aplus, L_inv), cplus)
+#ALPC = np.dot(np.dot(aminus, LP_inv), cminus)
+
+#zeta = np.dot(np.dot(A, omega_i), displacement)
+#eta = np.dot(np.dot(np.linalg.inv(J), aminus), displacement)
+#psi = displacement - np.dot(np.dot(duschinsky, cplus), eta)
+#SS = np.dot(duschinsky_T, duschinsky)
+#JL = np.dot(J, L)
+#SS_det = np.linalg.det(SS)
+#JL_det = np.linalg.det(JL)
+#SI = np.dot(duschinsky_T, omega_i)
+#AP = np.dot(A, psi)
+#SIL = np.dot(np.dot(duschinsky_T, omega_i), Lambda)
+#FCE = np.dot(np.dot(omega_f, cminus), eta)
+#SIAP = np.dot(np.dot(np.dot(duschinsky_T, omega_i), A), psi)
+#AP = np.dot(A, psi)
+#eta_dot_psi = np.dot(eta, psi)
+
+#sqrt = np.sqrt(det / partition / (SS_det * JL_det) / partition)
 correlation = []
 trace_vector = []
 updated_sqrt = - 1.0 + 0. * 1j
 timestep = 0.01
-for i in range(200000):
+for i in range(100000):
 	time = timestep * i
 	#if i // 1000 == 0:
 	#	print(i)
@@ -163,11 +201,9 @@ for i in range(200000):
 	else:
 		correlation.append(np.real(test[0]))
 	trace_vector.append(np.trace(test[2]))
-	#print('Time:', time)
-	#print(np.real(test[0]))
 
 correlation = np.array(correlation)
 trace_vector = np.array(trace_vector)
 np.savetxt('integrand.txt', correlation)
 np.savetxt('trace.txt', trace_vector)
-print(2 * sum(correlation) * timestep / atomic_time)
+print(sum(correlation) * timestep / atomic_time * 2)
