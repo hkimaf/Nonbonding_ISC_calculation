@@ -19,7 +19,7 @@ program duschinsky_read
     atomic_time = 2.418884326505e-17
     c_cm = 2.998e10
 ! Insert the adiabatic energy difference
-    adiabatic = 0.001145370000017 
+    adiabatic = 0.001412409999944 
 ! Insert the number of time steps you will take
     nsteps = 1000000
 ! Insert the temperature
@@ -28,7 +28,7 @@ program duschinsky_read
     time_step = 0.1
     integrated_result = 0.5 * time_step
 ! Insert the SOC matrix element
-    soc = SQRT(3.0) * 0.0233 * c_cm * atomic_time * 2 * 3.141592
+    soc = SQRT(3.0) * 0.0281 * c_cm * atomic_time * 2 * 3.141592
     end_point = time_step * nsteps
     starting_point = -end_point
     write(*,*) 'The integration will be performed from', starting_point * atomic_time * 1e15, 'femtoseconds to', end_point * atomic_time * 1e15, 'femtoseconds with time interval of', time_step * atomic_time * 1e15, 'femtoseconds'

@@ -19,14 +19,14 @@ program duschinsky_read
     atomic_time = 2.418884326505e-17
     c_cm = 2.998e10
 ! Insert the adiabatic energy difference
-    adiabatic = 0.008194189999926
+    adiabatic = 0.007863670000006
 ! Insert the number of time steps you will take
     nsteps = 1000000
 ! Insert the temperature
     temperature = 300.0
 ! Insert the time step, in atomic units
     time_step = 0.01
-    integrated_result = 0.5 * 1.094 * time_step
+    integrated_result = 0.5 * 1.096436388526960 * time_step
 ! Insert the SOC matrix element
     soc = 0.768123 * c_cm * atomic_time * 2 * 3.141592
     end_point = time_step * nsteps
